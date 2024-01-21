@@ -2,24 +2,30 @@
 import dotenv from "dotenv";
 import connectDB from "./database/index.js";
 
-// Second approch to connect database
+// 2nd approch to connect database
 dotenv.config({
   path: "./env",
 });
 
-connectDB();
+// Note: whenever async function is called, it returns a promise that's why we handle it with .then() and .catch() method
+connectDB()
+  .then(() => {
+    // listening error after connecting database
+    app.on("error", (error) => {
+      console.log(`Error : ${error}`);
+    });
 
-
-
-
-
-
-
-
-
+    // listening app after connecting database
+    app.listen(process.env.PORT || 8000, () => {
+      console.log(`Server started on port ${process.env.PORT}`);
+    });
+  })
+  .catch((error) => {
+    console.log("MondoDB connection failed!", error);
+  });
 
 /*
-// First approch to connect database
+// 1st approch to connect database
 
 // import mongoose from "mongoose";
 // import { DB_NAME } from "./constants.js";
