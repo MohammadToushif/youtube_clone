@@ -24,7 +24,19 @@ app.use(express.urlencoded({ extended: true, limit: "16kb" }));
 // this assets can be accessable for any user
 app.use("/public", express.static("public"));
 
-// to get, set or perform CURD operation on the browser cookie of the user from the server
-app.use(cookieParser())
+// to perform CURD operation on the user's browser cookie from the server
+app.use(cookieParser());
+
+// It's called file sagrigation
+// routes import
+import userRouter from "./routes/user.routes.js";
+
+// routes declearation
+// since we seperate route from the app, that's why we use middleware to get router
+// here when user hit on '/api/v1/users' it transfer the control to 'userRouter'
+app.use("/api/v1/users", userRouter);
+
+// http://localhost:8000/users/register
+// http://localhost:8000/users/login
 
 export default app;
