@@ -1,12 +1,18 @@
-import mongoose from "mongoose";
+import mongoose, { Schema } from "mongoose";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 
 const userSchema = new mongoose.Schema(
   {
+    fullName: {
+      type: String,
+      required: [true, "Fullname is required"],
+      trim: true,
+      index: true,
+    },
     userName: {
       type: String,
-      required: [, "User name is required"],
+      required: [true, "Username is required"],
       unique: true,
       lowercase: true,
       trim: true,
@@ -20,29 +26,24 @@ const userSchema = new mongoose.Schema(
       lowercase: true,
       trim: true,
     },
-    fullName: {
+    password: {
       type: String,
-      required: [true, "Full name is required"],
-      trim: true,
-      index: true,
+      required: [true, "Password is required"],
     },
-    avtar: {
+    avatar: {
       type: String, // cloudinary url
-      required: true,
+      required: [true, "Avatar image is required"],
     },
     coverImage: {
       type: String, //cloudinary url
     },
     watchHistory: [
       {
-        type: Schema.Types.ObjectId,
+        type: mongoose.Schema.Types.ObjectId,
         ref: "Video",
       },
     ],
-    password: {
-      type: String,
-      required: [true, "Password is required"],
-    },
+
     refreshToken: {
       type: String,
     },
@@ -77,7 +78,7 @@ userSchema.methods.generateAccessToken = function () {
     },
     process.env.ACCESS_TOKEN_SECRET,
     {
-      expiresIn: process.env.ACCESS_TOKEN_EXPIRE,
+      expiresIn: process.env.ACCESS_TOKEN_EXPIRY,
     }
   );
 };
@@ -91,7 +92,7 @@ userSchema.methods.generateRefreshToken = function () {
     },
     process.env.REFRESH_TOKEN_SECRET,
     {
-      expiresIn: process.env.REFRESH_TOKEN_EXPIRE,
+      expiresIn: process.env.REFRESH_TOKEN_EXPIRY,
     }
   );
 };

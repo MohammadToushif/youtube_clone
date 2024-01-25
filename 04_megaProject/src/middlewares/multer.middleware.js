@@ -5,7 +5,7 @@ const storage = multer.diskStorage({
     cb(null, "./public/temp");
   },
   filename: (req, file, cb) => {
-    cd(null, file.originalname); // you have to enhance this
+    cb(null, file.originalname); // you have to enhance this
   },
 });
 

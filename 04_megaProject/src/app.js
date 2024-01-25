@@ -22,7 +22,8 @@ app.use(express.urlencoded({ extended: true, limit: "16kb" }));
 
 // to store some public assets such as (file, folder, pdf etc)
 // this assets can be accessable for any user
-app.use("/public", express.static("public"));
+// app.use("/public", express.static("public"));
+app.use(express.static("public"));
 
 // to perform CURD operation on the user's browser cookie from the server
 app.use(cookieParser());

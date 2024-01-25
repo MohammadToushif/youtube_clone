@@ -5,7 +5,7 @@ import app from "./app.js";
 
 // 2nd approch to connect database
 dotenv.config({
-  path: "./env",
+  path: "./.env",
 });
 
 // Note: whenever async function is called, it returns a promise
