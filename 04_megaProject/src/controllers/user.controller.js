@@ -83,6 +83,7 @@ const registerUser = asyncHandler(async (req, res) => {
     .json(new ApiResponse(200, createdUser, "User registered successfully!"));
 });
 
+// function to generate access and refresh tokens
 const generateAccess_RefreshTokens = async (userId) => {
   try {
     const user = await User.findById(userId);
