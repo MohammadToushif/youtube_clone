@@ -1,4 +1,4 @@
-import mongoose, { Schema } from "mongoose";
+import mongoose from "mongoose";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 
@@ -43,7 +43,6 @@ const userSchema = new mongoose.Schema(
         ref: "Video",
       },
     ],
-
     refreshToken: {
       type: String,
     },
@@ -52,19 +51,24 @@ const userSchema = new mongoose.Schema(
 );
 
 // Here we use 'mongoose' 'pre' hook as a middleware
-/* since arrow function don't have the access of 'this', that's why we use our classic function because we need the context of 'userSchema'. */
+/* since arrow function don't have the access of 'this', that's why 
+we use our classic function because we need the context of 'userSchema' */
 
 userSchema.pre("save", async function (next) {
   if (!this.isModified("password")) return next();
-
   const salt = await bcrypt.genSalt(10);
   this.password = bcrypt.hash(this.password, salt);
   next();
 });
 
-// Here we create our custom methods form 'new mongoose.Schema()' .methods
-userSchema.methods.isPasswordCorrect = async function (password) {
-  return await bcrypt.compare(password, this.password);
+// Here we create our custom methods form 'mongoose.Schema()' .methods
+userSchema.methods.checkPassword = async function (password) {
+  // return await bcrypt.compare(password, this.password);
+  if (password === this.password) {
+    return true;
+  } else {
+    return false;
+  }
 };
 
 // function to generate access token

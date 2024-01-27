@@ -14,8 +14,10 @@
 // };
 
 const asyncHandler = (requestHandler) => {
-  return (req, res, nxt) => {
-    Promise.resolve(requestHandler(req, res, nxt)).catch((err) => nxt(err));
+  return (request, response, next) => {
+    Promise.resolve(requestHandler(request, response, next)).catch((error) =>
+      next(error)
+    );
   };
 };
 
